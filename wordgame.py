@@ -4,8 +4,10 @@ import sys
 from graph import *
 
 def findWeight(vertex1, vertex2):
+	""" Finds the weight between two vertices in accordance to specs given in homework """
+
 	# assume lengths will be the same
-	int numDiff = 0
+	numDiff = 0
 	word1 = vertex1.word
 	word2 = vertex2.word
 	for n in range(0, len(vertex1.word)):
@@ -20,7 +22,7 @@ def findWeight(vertex1, vertex2):
 		return 1
 	elif numDiff == 2:
 		return 5
-	else
+	else:
 		return 0
 
 if __name__ == "__main__":
@@ -46,3 +48,10 @@ if __name__ == "__main__":
 		graph.addVertex(vertex)
 
 	# compare every combination of vertices
+	for n in range(0, len(graph.vertices)):
+		for m in range(n, len(graph.vertices)):
+			weight = findWeight(graph.vertices[n], graph.vertices[m])
+
+			# add the edge if it is valid
+			if weight == 1 or weight == 5:
+				graph.vertices[n].connect(graph.vertices[m])
