@@ -6,7 +6,7 @@ class Vertex:
 		self.word = word
 
 		if len(word) != 5:
-			raise new Exception("Error: Words must be of length 5")
+			raise Exception("Error: Words must be of length 5")
 
 	def connect(self, otherVertex, weight):
 		""" Connect this vertex to another with the given weight """
