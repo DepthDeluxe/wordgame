@@ -54,4 +54,34 @@ if __name__ == "__main__":
 
 			# add the edge if it is valid
 			if weight == 1 or weight == 5:
-				graph.vertices[n].connect(graph.vertices[m])
+				graph.vertices[n].connect(graph.vertices[m], weight)
+
+	# main program loop
+	while True:
+		# propt user for a five-letter word and convert to upper case
+		inputStr = input("Enter a five-letter word: ")
+		inputStr = inputStr.upper()
+
+		# get the vertex from graph
+		vertex = graph.getVertexByWord(inputStr)
+		if vertex is None:
+			print("The word you entered doesn't exist in the graph, please try again")
+			continue
+
+		print("The neighbors of " + inputStr + " are :")
+		counter = 1
+		for n in range(0, len(vertex.adj)):
+			adj = vertex.adj[n]
+			weight = vertex.weights[n]
+			
+			end = ""
+			if counter == 6:
+				end = "\n"
+				counter = 0
+
+			# print out the adjacent element
+			print("\t" + adj.word + " (" + str(weight) + ")", end=end)
+			counter += 1
+
+		# add a newline at the end
+		print()
