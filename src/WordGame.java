@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 public class WordGame {
@@ -65,6 +66,43 @@ public class WordGame {
 		}
 		
 		return word;
+	}
+	
+	public void buildDijstra(Graph graph, String startWord) {
+		PriorityQueue<Vertex> queue = new PriorityQueue<Vertex>();
+		
+		// the start vertex has a distance of zero
+		Vertex startVertex = graph.getVertex(startWord);
+		startVertex.setDistance(0);
+		
+		// put the first vertex in the queue
+		queue.add(startVertex);
+		
+		// loop until the queue is empty
+		while (!queue.isEmpty()) {
+			// get the next vertex
+			Vertex vertex = queue.poll();
+			
+			// iterate through the adjacency list
+			Vertex[] adjList = vertex.getAdjList();
+			for (Vertex adjVertex : adjList) {
+
+				// compute the distance to the adjacent vertex using this shortest path
+				int vertexDist = vertex.getDistance();
+				int edgeWeight = vertex.getWeight(adjVertex);
+				int adjVertexDist = vertexDist + edgeWeight;
+				
+				// set the new distance if the current distance is greater than the newly calculated one
+				if (adjVertex.getDistance() > adjVertexDist) {
+					
+					// set that vertex's distance
+					adjVertex.setDistance(adjVertexDist);
+					
+					// add that vertex to the queue
+					queue.add(adjVertex);
+				}
+			}
+		}
 	}
 	
 	public static void main(String[] args) throws IOException {
