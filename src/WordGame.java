@@ -176,12 +176,11 @@ public class WordGame {
 			int counter = 1;
 
 			// search the adjacency list
-			HashMap<Vertex, Integer> adjList = vertex.getAdjList();
-			Vertex[] adjVerts = adjList.keySet().toArray(new Vertex[0]);
-			for(int n = 0; n < adjVerts.length; n++){
+			Vertex[] adjList = vertex.getAdjList();
+			for(int n = 0; n < adjList.length; n++){
 				
-				Vertex otherVertex = adjVerts[n];
-				int weight = adjList.get(otherVertex);
+				Vertex otherVertex = adjList[n];
+				int weight = vertex.getWeight(otherVertex);
 				
 				String end = "";
 				if(counter == 6){
