@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -68,7 +69,7 @@ public class WordGame {
 		return word;
 	}
 	
-	public void buildDijstra(Graph graph, String startWord) {
+	public static void buildDijstra(Graph graph, String startWord) {
 		PriorityQueue<Vertex> queue = new PriorityQueue<Vertex>();
 		
 		// the start vertex has a distance of zero
@@ -95,8 +96,9 @@ public class WordGame {
 				// set the new distance if the current distance is greater than the newly calculated one
 				if (adjVertex.getDistance() > adjVertexDist) {
 					
-					// set that vertex's distance
+					// set that vertex's distance and parent
 					adjVertex.setDistance(adjVertexDist);
+					adjVertex.setParent(vertex);
 					
 					// add that vertex to the queue
 					queue.add(adjVertex);
@@ -160,38 +162,44 @@ public class WordGame {
 		
 		// main program loop
 		while(true){
-			String input = console.readLine("Enter a five-letter word: ");
+			String firstWord = console.readLine("Enter the first five-letter word: ");
+			firstWord = firstWord.toUpperCase();
 			
-			input = input.toUpperCase();
+			String secondWord = console.readLine("Enter the second five-letter word: ");
+			secondWord = secondWord.toUpperCase();
 			
-			// try to pull the vertex from the graph
-			Vertex vertex = graph.getVertex(input);
-			if(vertex == null){
-				System.out.println("The word doesn't exist in the graph, please try again.");
+			// check to see if the vertex is in the graph
+			Vertex firstVertex = graph.getVertex(firstWord);
+			Vertex secondVertex = graph.getVertex(secondWord);
+			if(firstVertex == null || secondVertex == null){
+				System.out.println("One of the two words doesn't exist in the graph, please try again.");
 				continue;
 			}
 			
-			// find the result by looking at that vertex's adjacency list
-			System.out.println("The neighbors of " + input + " are :");
-			int counter = 1;
-
-			// search the adjacency list
-			Vertex[] adjList = vertex.getAdjList();
-			for(int n = 0; n < adjList.length; n++){
-				
-				Vertex otherVertex = adjList[n];
-				int weight = vertex.getWeight(otherVertex);
-				
-				String end = "";
-				if(counter == 6){
-					end = "\n";
-					counter = 0;
-				}
-				
-				System.out.print("\t" + otherVertex.getWord() + " (" + String.valueOf(weight) + ")" + end);
-				counter += 1;
+			// perform Dijstra first using the first word as the source
+			buildDijstra(graph, firstWord);
+			
+			// get the distance out of the graph
+			int distance = secondVertex.getDistance();
+			
+			System.out.println("The best score for " + firstWord + " to " + secondWord + " is " + String.valueOf(distance) + " points");
+			
+			// build the search path
+			ArrayList<Vertex> searchPath = new ArrayList<Vertex>();
+			Vertex curVertex = secondVertex;
+			while (curVertex.getParent() != null) {
+				searchPath.add(curVertex);
+				curVertex = curVertex.getParent();
 			}
 			
+			// we want start to finish not finish to start
+			Collections.reverse(searchPath);
+			
+			// print the result
+			System.out.print("\n\t");
+			for (Vertex v : searchPath) {
+				System.out.print(v.getWord() + " ");
+			}
 			System.out.println();
 		}
 	}

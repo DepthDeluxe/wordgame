@@ -45,6 +45,10 @@ public class Vertex implements Comparable<Vertex> {
 		return distance;
 	}
 	
+	public Vertex getParent() {
+		return parent;
+	}
+	
 	public Vertex[] getAdjList(){
 		return adj.keySet().toArray(new Vertex[0]);
 	}
@@ -69,5 +73,9 @@ public class Vertex implements Comparable<Vertex> {
 	
 	public void setDistance(int distance) {
 		this.distance = distance;
+	}
+	
+	public void setParent(Vertex parent) {
+		this.parent = parent;
 	}
 }
