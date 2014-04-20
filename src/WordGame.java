@@ -164,9 +164,11 @@ public class WordGame {
 		while(true){
 			String firstWord = console.readLine("Enter the first five-letter word: ");
 			firstWord = firstWord.toUpperCase();
+			System.out.println();
 			
 			String secondWord = console.readLine("Enter the second five-letter word: ");
 			secondWord = secondWord.toUpperCase();
+			System.out.println();
 			
 			// check to see if the vertex is in the graph
 			Vertex firstVertex = graph.getVertex(firstWord);
@@ -182,7 +184,7 @@ public class WordGame {
 			// get the distance out of the graph
 			int distance = secondVertex.getDistance();
 			
-			System.out.println("The best score for " + firstWord + " to " + secondWord + " is " + String.valueOf(distance) + " points");
+			System.out.println("The best score for " + firstWord + " to " + secondWord + " is " + String.valueOf(distance) + " points.");
 			
 			// build the search path
 			ArrayList<Vertex> searchPath = new ArrayList<Vertex>();
@@ -191,6 +193,8 @@ public class WordGame {
 				searchPath.add(curVertex);
 				curVertex = curVertex.getParent();
 			}
+			// add the first vertex so it prints out
+			searchPath.add(firstVertex);
 			
 			// we want start to finish not finish to start
 			Collections.reverse(searchPath);
@@ -198,8 +202,9 @@ public class WordGame {
 			// print the result
 			System.out.print("\n\t");
 			for (Vertex v : searchPath) {
-				System.out.print(v.getWord() + " ");
+				System.out.print(v.getWord() + "  ");
 			}
+			System.out.println();
 			System.out.println();
 		}
 	}
