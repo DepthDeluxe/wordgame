@@ -1,1 +1,5 @@
 __pycache__
+*.class
+.classpath
+.project
+.settings
